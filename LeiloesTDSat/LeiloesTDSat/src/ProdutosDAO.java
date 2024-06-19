@@ -22,6 +22,9 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
+     git push -u origin main
+
+    
     public boolean cadastrarProduto (ProdutosDTO produto){
       String sql = "INSERT INTO produto (nome, valor, status) VALUES (?, ?, ?)";
         try (PreparedStatement st = conn.prepareStatement(sql)) { 
