@@ -30,11 +30,18 @@ public class ProdutosDAO {
             st.setInt(2, produto.getValor());
              st.setString(3, produto.getStatus());
              int inserido = st.executeUpdate();
-            return inserido > 0;
-        } catch (SQLException ex) {
+            if (inserido > 0) {
+            System.out.println("Produto cadastrado com sucesso!");
+            return true;
+        } else {
+            System.out.println("Erro ao cadastrar o produto.");
             return false;
-             
-        }  
+        }
+    } catch (SQLException ex) {
+        System.err.println("Erro ao cadastrar o produto: " + ex.getMessage());
+        return false;
+    }
+
         
         //conn = new conectaDAO().connectDB();
         
