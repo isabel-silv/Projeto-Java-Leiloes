@@ -22,17 +22,21 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-     git push -u origin main
-
+     private String url = "jdbc:mysql://localhost:3306/uc11";
+    private String user = "root";
+    private String password = "Jkic25032004@";  
     
-    public boolean cadastrarProduto (ProdutosDTO produto){
-      String sql = "INSERT INTO produto (nome, valor, status) VALUES (?, ?, ?)";
-        try (PreparedStatement st = conn.prepareStatement(sql)) { 
-           st.setString(1, produto.getNome());
-            st.setInt(2, produto.getValor());
-             st.setString(3, produto.getStatus());
-             int inserido = st.executeUpdate();
-            if (inserido > 0) {
+   public boolean cadastrarProduto(ProdutosDTO produto) {
+     conectaDAO conecta = new conectaDAO();
+    Connection conn = conectaDAO.connectDB();
+     if (conn != null) { 
+       String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+    try (PreparedStatement st = conn.prepareStatement(sql)) {
+        st.setString(1, produto.getNome());
+        st.setInt(2, produto.getValor());
+        st.setString(3, produto.getStatus());
+        int inserido = st.executeUpdate();
+        if (inserido > 0) {
             System.out.println("Produto cadastrado com sucesso!");
             return true;
         } else {
@@ -42,35 +46,34 @@ public class ProdutosDAO {
     } catch (SQLException ex) {
         System.err.println("Erro ao cadastrar o produto: " + ex.getMessage());
         return false;
-    }   
-        //conn = new conectaDAO().connectDB();   
     }
-    
-    public ArrayList<ProdutosDTO> listarProdutos(){
-       try { 
-         String sql = "SELECT * FROM produtos";
-        PreparedStatement st = conn.prepareStatement(sql); 
-          ResultSet rs = st.executeQuery();
-          
-       while (rs.next()) {
-       ProdutosDTO produto = new ProdutosDTO();
-         produto.setId(1);
-         produto.setNome("Produto A");
-        produto.setValor(100);
-         produto.setStatus("Ativo");
-        listagem.add(produto);
-        
-       } 
-        return listagem;
-          } catch (SQLException ex) {
-                 return null;
+       
+     }  
+        return false;
+}
+
+public ArrayList<ProdutosDTO> listarProdutos() {
+    ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    try {
+       conectaDAO conecta = new conectaDAO();
+        Connection conn = conectaDAO.connectDB(); 
+        String sql = "SELECT * FROM produtos";
+        PreparedStatement st = conn.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
+       
+         
+        while (rs.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(rs.getInt("id")); 
+            produto.setNome(rs.getString("nome"));
+            produto.setValor(rs.getInt("valor"));
+            produto.setStatus(rs.getString("status"));
+            listagem.add(produto);
         }
-    
-          }
-  
-    
-    
-    
-        
+        return listagem;
+    } catch (SQLException ex) {
+        return null;
+    }
+}
 }
 
