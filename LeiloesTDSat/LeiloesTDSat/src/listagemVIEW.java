@@ -149,7 +149,7 @@ public class listagemVIEW extends javax.swing.JFrame {
          listarProdutos();
     } catch (NumberFormatException ex) {
         System.err.println("ID inválido. Certifique-se de inserir um número válido.");
-        //produtosdao.venderProduto(Integer.parseInt(id));
+       
         listarProdutos();
     }
     }//GEN-LAST:event_btnVenderActionPerformed

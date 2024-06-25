@@ -1,3 +1,7 @@
+
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -14,6 +18,9 @@ public class Vendas extends javax.swing.JFrame {
      */
     public Vendas() {
         initComponents();
+       ProdutosDAO produtosdao = new ProdutosDAO();
+        ArrayList<ProdutosDTO> produtosVendidos = new ArrayList<>();
+        listarProdutosVendidos ();
     }
 
     /**
@@ -26,13 +33,13 @@ public class Vendas extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        listaProdutosVendidos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        listaProdutosVendidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -48,7 +55,7 @@ public class Vendas extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(listaProdutosVendidos);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Lista de Produtos Vendidos");
@@ -135,6 +142,33 @@ public class Vendas extends javax.swing.JFrame {
     private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable listaProdutosVendidos;
     // End of variables declaration//GEN-END:variables
+    @SuppressWarnings("empty-statement")
+    private void listarProdutosVendidos(){
+       try {
+        ProdutosDAO produtosdao = new ProdutosDAO();
+
+        DefaultTableModel model = (DefaultTableModel) listaProdutosVendidos.getModel();
+        model.setNumRows(0);
+            
+             ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos();;
+            
+            for (ProdutosDTO produto : listagem) {
+            model.addRow(new Object[]{
+                produto.getId(),
+                produto.getNome(),
+                produto.getValor(),
+                produto.getStatus()
+            });
+        }
+    } catch (Exception e) {
+        System.err.println("Erro ao listar produtos vendidos: " + e.getMessage());
+    }
+   
+    }
 }
+
+
+
+
