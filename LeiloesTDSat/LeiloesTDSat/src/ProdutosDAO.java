@@ -75,5 +75,34 @@ public ArrayList<ProdutosDTO> listarProdutos() {
         return null;
     }
 }
+public boolean venderProduto(int id) {
+        try {
+            conectaDAO conecta = new conectaDAO();
+            Connection conn = conectaDAO.connectDB();
+
+            if (conn != null) {
+                String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setInt(1, id);
+                    int atualizado = st.executeUpdate();
+
+                    if (atualizado > 0) {
+                        System.out.println("Produto marcado como vendido!");
+                        return true;
+                    } else {
+                        System.out.println("Erro ao atualizar o status do produto.");
+                        return false;
+                    }
+                }
+            } else {
+                System.out.println("Erro na conexão com o banco de dados.");
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao atualizar o status do produto: " + ex.getMessage());
+            return false;
+        }
+    }
+
 }
 
