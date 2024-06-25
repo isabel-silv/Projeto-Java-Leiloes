@@ -103,6 +103,32 @@ public boolean venderProduto(int id) {
             return false;
         }
     }
+ public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        ArrayList<ProdutosDTO> produtosVendidos = new ArrayList<>();
+        try {
+            conectaDAO conecta = new conectaDAO();
+            Connection conn = conectaDAO.connectDB();
+
+            if (conn != null) {
+                String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    ResultSet rs = st.executeQuery();
+
+                    while (rs.next()) {
+                        ProdutosDTO produto = new ProdutosDTO();
+                        produto.setId(rs.getInt("id"));
+                        produto.setNome(rs.getString("nome"));
+                        produto.setValor(rs.getInt("valor"));
+                        produto.setStatus(rs.getString("status"));
+                        produtosVendidos.add(produto);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao listar produtos vendidos: " + ex.getMessage());
+        }
+        return produtosVendidos;
+ }
 
 }
 
