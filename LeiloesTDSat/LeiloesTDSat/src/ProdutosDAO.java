@@ -46,12 +46,10 @@ public class ProdutosDAO {
     } catch (SQLException ex) {
         System.err.println("Erro ao cadastrar o produto: " + ex.getMessage());
         return false;
-    }
-       
+    }   
      }  
         return false;
 }
-
 public ArrayList<ProdutosDTO> listarProdutos() {
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     try {
